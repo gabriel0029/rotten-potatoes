@@ -35,7 +35,7 @@ spec:
     - port: 27017
   type: ClusterIP
 ---
-# Deployment aplicação web
+# Deployment Aplicação Web
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -67,7 +67,7 @@ spec:
             - name: MONGO_PASSWORD
               value: "mongopwd"
 ---
-# Service Aplicação WEB
+# Service Aplicação Web
 apiVersion: v1
 kind: Service
 metadata:
