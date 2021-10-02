@@ -1,14 +1,16 @@
-# Deployment do MongoDB
+# Deployment do MongoDB 
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mongodb
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: mongodb
   template:
-    metadata:
+    metadata: 
       labels:
         app: mongodb
     spec:
@@ -18,24 +20,24 @@ spec:
           ports:
             - containerPort: 27017
           env:
-            - name: MONGO_INITDB_ROOT_USERNAME
-              value: mongouser
-            - name: MONGO_INITDB_ROOT_PASSWORD
-              value: mongopwd
----
-# Service do MongoDB
+           - name: MONGO_INITDB_ROOT_USERNAME
+             value: mongouser
+           - name: MONGO_INITDB_ROOT_PASSWORD
+             value: mongopwd
+--- 
+# service do mongodb
 apiVersion: v1
 kind: Service
 metadata:
   name: mongodb
 spec:
-  selector:
-    app: mongodb
+  selector: 
+    app: mongodb 
   ports:
     - port: 27017
   type: ClusterIP
 ---
-# Deployment Aplicação Web
+  # Deploymente da aplicacao web
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -49,34 +51,33 @@ spec:
     metadata:
       labels:
         app: web
-    spec:
-      containers:
+    spec: 
+      containers: 
         - name: web
-          image:  gabriel0029/rotten-potatoes:1.0
+          image: veras45/rotten-potatoes:v1
           ports:
             - containerPort: 5000
-          env:
+          env: 
             - name: MONGODB_DB
               value: "admin"
             - name: MONGODB_HOST
-              value: "mongodb"
+              value: "mongodb"  
             - name: MONGODB_PORT
               value: "27017"
             - name: MONGODB_USERNAME
-              value: "mongouser"
+              value: "mongouser"    
             - name: MONGODB_PASSWORD
-              value: "mongopwd"
+              value: "mongopwd"  
 ---
-# Service Aplicação Web
+  # services da aplicacao web
 apiVersion: v1
 kind: Service
 metadata:
   name: web
 spec:
-  selector:
-    app: web
+  selector: 
+    app: web 
   ports:
     - port: 80
       targetPort: 5000
-      nodePort: 30000
-  type: NodePort
+  type: LoadBalancer
